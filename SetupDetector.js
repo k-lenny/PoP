@@ -1,7 +1,4 @@
-SetupDetector.js
 
-// SetupDetector.js
-// World-class S Setup Detector using Deriv WebSocket data
 import { useEffect, useState } from 'react';
 import './Setup.css';
 
