@@ -1,4 +1,3 @@
-DerivChartEmbed.js
 
 import React from 'react';
 import './DerivChartEmbed.css';
