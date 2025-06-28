@@ -1,0 +1,61 @@
+MssLogic.css
+
+.mss-logic {
+    padding: 20px;
+    background-color: #111827;
+    color: #f9fafb;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .controls select {
+    padding: 8px 12px;
+    background-color: #1f2937;
+    color: #f9fafb;
+    border: 1px solid #374151;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #93c5fd;
+  }
+  
+  .entry-list {
+    list-style-type: none;
+    padding-left: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border-top: 1px solid #374151;
+  }
+  
+  .entry-item {
+    padding: 10px;
+    border-bottom: 1px solid #374151;
+    font-size: 14px;
+    background-color: #1e293b;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+  
+  .entry-item:hover {
+    background-color: #334155;
+  }
+  
+  .entry-item strong {
+    color: #a5f3fc;
+  }
+  

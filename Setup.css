@@ -1,0 +1,100 @@
+Setup.css
+
+/* Setup.css */
+
+/* Container for the entire setup */
+.setup-container {
+    padding: 20px;
+    background: #111;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Styling for the chart container */
+.chart-wrapper {
+    position: relative;
+    height: 500px;
+    width: 95%;
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+/* Custom setup overlay */
+.setup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none; /* Allow clicks to go through to the chart */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 10; /* Make sure the setups are on top of the chart */
+}
+
+/* Setup markers (bullish or bearish setups) */
+.setup-marker {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 1); /* Set opacity to 1 for full visibility */
+    font-size: 12px;
+    text-align: center;
+    z-index: 15;
+  }
+  
+.setup-marker.bullish {
+    background-color: rgba(76, 175, 80, 0.8);
+    color: white;
+}
+
+.setup-marker.bearish {
+    background-color: rgba(255, 77, 79, 0.8);
+    color: white;
+}
+
+/* Styling for the setup list */
+.setup-list {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.setup-list h3 {
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+/* Individual setup cards */
+.setup-card {
+    background: #222;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+    color: white;
+}
+
+.setup-card:hover {
+    transform: scale(1.03);
+}
+
+/* Styling for bearish and bullish setup cards */
+.setup-card.bearish {
+    border-left: 4px solid #ff4d4f;
+}
+
+.setup-card.bullish {
+    border-left: 4px solid #4caf50;
+}
