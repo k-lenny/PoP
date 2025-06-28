@@ -1,4 +1,3 @@
-TradingViewChart.js
 
 import { useEffect, useRef, useState } from 'react';
 import SetupDetector from './SetupDetector';
