@@ -1,5 +1,3 @@
-BotLogic.js
-
 
 import { useEffect, useState, useCallback } from "react";
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ComposedChart, Line } from "recharts";
