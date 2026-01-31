@@ -1,0 +1,187 @@
+
+.alert-container {
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 25px;
+    background: rgba(30, 30, 30, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    color: #fff;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.alert-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Heading */
+.alert-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+/* Labels */
+.alert-container label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* Select & Input */
+.alert-container select,
+.alert-container input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    outline: none;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out, border 0.3s;
+}
+
+.alert-container select:focus,
+.alert-container input:focus {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    border-color: #ff9800;
+}
+
+/* Dropdown Styling */
+.alert-container select {
+    cursor: pointer;
+    background-color: white;
+    color: #333;
+    border-radius: 8px;
+    padding: 10px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'><path fill='black' d='M7 10l5 5 5-5H7z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+}
+
+/* Improve dropdown options */
+.alert-container select option {
+    background-color: white;
+    color: #333;
+}
+
+/* Adjusted Input Field */
+.alert-container input {
+    width: 80%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.alert-container input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+    text-align: center;
+}
+
+/* Current Price Display */
+.alert-container .current-price {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.current-price {
+    transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.current-price.up {
+    color: #4CAF50;
+    transform: scale(0.9);
+}
+
+.current-price.down {
+    color: #F44336;
+    transform: scale(0.9);
+}
+
+/* Up/Down Arrows */
+.current-price .arrow {
+    font-size: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.current-price.up .arrow {
+    color: #4CAF50;
+    transform: translateY(-2px);
+}
+
+.current-price.down .arrow {
+    color: #F44336;
+    transform: translateY(2px);
+}
+
+/* Button Styling */
+.alert-container button {
+    margin-top: 15px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #ff9800;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+.alert-container button:hover {
+    background: #e68900;
+    transform: scale(1.05);
+}
+
+/* Alert Table */
+.alert-list {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.alert-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.alert-table th, .alert-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.alert-table th {
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: bold;
+}
+
+.alert-table tr:last-child td {
+    border-bottom: none;
+}
