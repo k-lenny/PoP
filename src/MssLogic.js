@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import "./MssLogic.css";
+import "./styles/MssLogic.css";
 
 const granularityMap = {
   "1m": 60,

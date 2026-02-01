@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { saveAs } from "file-saver";
-import "./Simulator.css";
+import "./styles/Simulator.css";
 
 const Simulator = () => {
   const [initialCapital, setInitialCapital] = useState(1000);

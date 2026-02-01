@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import "./BotLogic.css";
+import "./styles/BotLogic.css";
 import { Link } from "react-router-dom";
 
 const volatilitySymbols = {

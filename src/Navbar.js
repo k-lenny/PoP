@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './Navbar.css'; // Make sure this path matches your file structure
+import './styles/Navbar.css'; // Make sure this path matches your file structure
 
 const Navbar = () => {
   return (

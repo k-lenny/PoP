@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from "react";
-import "./Order.css";
+import "./styles/Order.css";
 
 const Order = () => {
   const [selectedVolatility, setSelectedVolatility] = useState("R_10");

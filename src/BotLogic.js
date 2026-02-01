@@ -1,7 +1,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ComposedChart, Line } from "recharts";
-import "./BotLogic.css";
+import "./styles/BotLogic.css";
 
 const volatilitySymbols = {
   "Volatility 10": "R_10",

@@ -1,7 +1,7 @@
 
 // World-class S Setup Detector using Deriv WebSocket data
 import { useEffect, useState } from 'react';
-import './Setup.css';
+import './styles/Setup.css';
 
 const SetupDetector = ({ onNewSetup, onCandles }) => {
   const [candles, setCandles] = useState([]);

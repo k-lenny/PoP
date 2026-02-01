@@ -1,6 +1,6 @@
 
 import React from 'react';
-import './DerivChartEmbed.css';
+import './styles/DerivChartEmbed.css';
 
 const DerivChartEmbed = () => {
   return (
