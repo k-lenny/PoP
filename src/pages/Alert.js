@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import "./styles/Alert.css"; // Import the CSS file
+import "../styles/Alert.css"; // Import the CSS file
 
 const TELEGRAM_BOT_TOKEN = "8146767397:AAELhzrVhMQYJzHg2usACDglz2ef6Zs0mCs";
 const TELEGRAM_CHAT_ID = "6454180433";

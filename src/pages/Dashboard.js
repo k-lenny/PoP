@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import './styles/Dashboard.css';
+import '../styles/Dashboard.css';
 import DerivChartEmbed from './DerivChartEmbed';
 import { 
   FaPlug, 

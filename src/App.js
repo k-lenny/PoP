@@ -1,17 +1,17 @@
 
 import React, { useState } from "react";
 import { Routes, Route } from 'react-router-dom';
-import BotLogic from "./BotLogic";
-import Order from "./Order";
-import Tick from "./Tick";
-import Alert from "./Alert";
-import Navbar from "./Navbar";
-import MssLogic from "./MssLogic";
-import Simulator from "./Simulator";
-import Dashboard from "./Dashboard";
-import TradingViewChart from "./TradingViewChart";
-import Algo from "./Algo"
-import EQH from "./EQH";
+import BotLogic from "./pages/BotLogic";
+import Order from "./pages/Order";
+import Tick from "./pages/Tick";
+import Alert from "./pages/Alert";
+import Navbar from "./components/Navbar";
+import MssLogic from "./pages/MssLogic";
+import Simulator from "./pages/Simulator";
+import Dashboard from "./pages/Dashboard";
+import TradingViewChart from "./pages/TradingViewChart";
+import Algo from "./pages/Algo"
+import EQH from "./pages/EQH";
 
 const App = () => {
   const [candles, ] = useState([]);

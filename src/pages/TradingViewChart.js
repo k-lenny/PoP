@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import SetupDetector from './SetupDetector';
-import './styles/Setup.css';
+import '../styles/Setup.css';
 
 const TradingViewChart = () => {
   const chartContainerRef = useRef();

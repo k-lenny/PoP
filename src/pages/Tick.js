@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
   Cell
 } from "recharts";
-import "./styles/TickVolume.css";
+import "../styles/TickVolume.css";
 
 const TickVolume = () => {
   const [selectedVolatility, setSelectedVolatility] = useState("R_10");
