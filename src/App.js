@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import TradingViewChart from "./pages/TradingViewChart";
 import Algo from "./pages/Algo"
 import EQH from "./pages/EQH";
+import Main from "./pages/Main";
 
 const App = () => {
   const [candles, ] = useState([]);
@@ -21,6 +22,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/eq" element={<BotLogic />} />
+        <Route path="/main" element={<Main />} />
          <Route path="/Algo" element={<Algo />} />
         <Route path="/Tick" element={<Tick />} />
         <Route path="/eqh/:timestamp" element={<EQH />} />

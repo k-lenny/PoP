@@ -6,12 +6,15 @@ import "../styles/BotLogic.css";
 const volatilitySymbols = {
   "Volatility 10": "R_10",
   "Volatility 10s": "1HZ10V",
+  "Volatility 15s": "1HZ15V",
   "Volatility 25": "R_25",
   "Volatility 25s": "1HZ25V",
+  "Volatility 30s": "1HZ30V",
   "Volatility 50": "R_50",
   "Volatility 50s": "1HZ50V",
   "Volatility 75": "R_75",
   "Volatility 75s": "1HZ75V",
+  "Volatility 90s": "1HZ90V",
   "Volatility 100": "R_100",
   "Volatility 100s": "1HZ100V",
 };
@@ -36,7 +39,7 @@ const formatTime = (epochTime) => {
   return `${date.toISOString().split("T")[0]} ${date.toISOString().split("T")[1].split(".")[0]}`;
 };
 
-const BotLogic = () => {
+const BotLogic = ({ onNotificationClick }) => {
   const [priceData, setPriceData] = useState([]);
   const [eqhNotifications, setEqhNotifications] = useState([]);
   const [eqlNotifications, setEqlNotifications] = useState([]);
@@ -287,7 +290,7 @@ const BotLogic = () => {
                 proximity,
               });
 
-              const retestCandles = data.slice(breakoutIndex, breakoutIndex + 20);
+              const retestCandles = data.slice(breakoutIndex, breakoutIndex + 50);
               let retestSwing = retestCandles.find((candle, idx) => {
                 let prev = retestCandles[idx - 1];
                 let next = retestCandles[idx + 1];
@@ -296,35 +299,89 @@ const BotLogic = () => {
                        candle.high > prev.high && candle.high > next.high; // Swing high check
               });
 
-              if (retestSwing) {
-                const lastSwingHighAfterBreakout = swingHighs.find((swing) => swing.index > breakoutIndex);
+ if (retestSwing) {
+  const lastSwingHighAfterBreakout = swingHighs.find((swing) => swing.index > breakoutIndex);
+  const lastSwingLowAfterBreakout = swingLows.find((swing) => swing.index > breakoutIndex);
 
-                if (lastSwingHighAfterBreakout) {
-                  const closesAboveSwingHigh = retestCandles.some((candle) => candle.close > lastSwingHighAfterBreakout.high);
+  if (lastSwingHighAfterBreakout) {
+    const madeHigherHigh = retestCandles.some((candle) => 
+      candle.high > high.high
+    );
+    
+    const brokeStructure = lastSwingLowAfterBreakout && 
+      retestCandles.some((candle) => candle.low < lastSwingLowAfterBreakout.low);
 
-                  if (closesAboveSwingHigh) {
-                    status = "Continuation";
-                    color = "yellow";
-                  } else {
-                    status = "Reversal";
-                    color = "green";
-                  }
-                }
+    if (madeHigherHigh && !brokeStructure) {
+      status = "Continuation";
+      color = "yellow";
+    } else if (brokeStructure) {
+      status = "Reversal";
+      color = "green";
+} else {
+  // ✅ TIME-BASED CHECK FOR MANUAL CASES
+  const candlesSinceBreakout = data.length - 1 - breakoutIndex;
 
-                eqhNotices.pop();
-                eqhNotices.push({
-                  level: high.high,
-                  currentSwing: formatTime(high.time),
-                  previousSwing: formatTime(prevHigh.time),
-                  currentPrice: high.high,
-                  previousPrice: prevHigh.high,
-                  breakout: true,
-                  retest: true,
-                  status,
-                  color,
-                  proximity,
-                });
-              }
+  if (candlesSinceBreakout >= 50) {
+    const recentCandles = data.slice(-10);
+    const currentPrice = data[data.length - 1].close;
+    
+    // Calculate distance from EQH level
+    const distanceFromEQH = ((currentPrice - high.high) / high.high) * 100;
+    
+    // Calculate averages FIRST
+    const avgHighRecent = recentCandles.reduce((sum, c) => sum + c.high, 0) / recentCandles.length;
+    const avgCloseRecent = recentCandles.reduce((sum, c) => sum + c.close, 0) / recentCandles.length;
+    
+    // Count candles
+    const candlesAboveEQH = recentCandles.filter(c => c.close > high.high).length;
+    const candlesBelowEQH = recentCandles.filter(c => c.close < high.high).length;
+    
+    // Define all checks
+    const priceStillAboveEQH = currentPrice > high.high;
+    const holdingAboveLevel = avgHighRecent > high.high;
+    const avgCloseAbove = avgCloseRecent > high.high;
+    const sharpMoveAway = distanceFromEQH > 0.1;
+    const mostCandlesAbove = candlesAboveEQH >= 6;
+    
+    const clearlyBelowEQH = currentPrice < (high.high * 0.9995);
+    const mostCandlesBelow = candlesBelowEQH > 6;
+    
+    // CONTINUATION: Price holding above or moved sharply away
+    if (sharpMoveAway || (priceStillAboveEQH && mostCandlesAbove) || (holdingAboveLevel && avgCloseAbove)) {
+      status = "Continuation";
+      color = "yellow";
+    } 
+    // REVERSAL: Price clearly came back below
+    else if (clearlyBelowEQH && mostCandlesBelow) {
+      status = "Reversal";
+      color = "green";
+    } 
+    // MANUAL CHECK: Genuinely at the level
+    else {
+      status = "Manual Check";
+      color = "white";
+    }
+  } else {
+    status = "Manual Check";
+    color = "white";
+  }
+}
+  }
+
+  eqhNotices.pop();
+  eqhNotices.push({
+    level: high.high,
+    currentSwing: formatTime(high.time),
+    previousSwing: formatTime(prevHigh.time),
+    currentPrice: high.high,
+    previousPrice: prevHigh.high,
+    breakout: true,
+    retest: true,
+    status,
+    color,
+    proximity,
+  });
+}
             }
           }
         }
@@ -381,7 +438,7 @@ const BotLogic = () => {
                 proximity,
               });
 
-              const retestCandles = data.slice(breakoutIndex, breakoutIndex + 20);
+              const retestCandles = data.slice(breakoutIndex, breakoutIndex + 50);
               let retestSwing = retestCandles.find((candle, idx) => {
                 let prev = retestCandles[idx - 1];
                 let next = retestCandles[idx + 1];
@@ -390,35 +447,89 @@ const BotLogic = () => {
                        candle.low < prev.low && candle.low < next.low; // Swing low check
               });
 
-              if (retestSwing) {
-                const lastSwingLowAfterBreakout = swingLows.find((swing) => swing.index > breakoutIndex);
+   if (retestSwing) {
+  const lastSwingLowAfterBreakout = swingLows.find((swing) => swing.index > breakoutIndex);
+  const lastSwingHighAfterBreakout = swingHighs.find((swing) => swing.index > breakoutIndex);
 
-                if (lastSwingLowAfterBreakout) {
-                  const closesBelowSwingLow = retestCandles.some((candle) => candle.close < lastSwingLowAfterBreakout.low);
+  if (lastSwingLowAfterBreakout) {
+    const madeLowerLow = retestCandles.some((candle) => 
+      candle.low < low.low
+    );
+    
+    const brokeStructure = lastSwingHighAfterBreakout && 
+      retestCandles.some((candle) => candle.high > lastSwingHighAfterBreakout.high);
 
-                  if (closesBelowSwingLow) {
-                    status = "Continuation";
-                    color = "yellow";
-                  } else {
-                    status = "Reversal";
-                    color = "green";
-                  }
-                }
+    if (madeLowerLow && !brokeStructure) {
+      status = "Continuation";
+      color = "yellow";
+    } else if (brokeStructure) {
+      status = "Reversal";
+      color = "green";
+} else {
+  // ✅ TIME-BASED CHECK FOR MANUAL CASES
+  const candlesSinceBreakout = data.length - 1 - breakoutIndex;
 
-                eqlNotices.pop();
-                eqlNotices.push({
-                  level: low.low,
-                  currentSwing: formatTime(low.time),
-                  previousSwing: formatTime(prevLow.time),
-                  currentPrice: low.low,
-                  previousPrice: prevLow.low,
-                  breakout: true,
-                  retest: true,
-                  status,
-                  color,
-                  proximity,
-                });
-              }
+  if (candlesSinceBreakout >= 50) {
+    const recentCandles = data.slice(-10);
+    const currentPrice = data[data.length - 1].close;
+    
+    // Calculate distance from EQL level
+    const distanceFromEQL = ((currentPrice - low.low) / low.low) * 100;
+    
+    // Calculate averages FIRST
+    const avgLowRecent = recentCandles.reduce((sum, c) => sum + c.low, 0) / recentCandles.length;
+    const avgCloseRecent = recentCandles.reduce((sum, c) => sum + c.close, 0) / recentCandles.length;
+    
+    // Count candles
+    const candlesBelowEQL = recentCandles.filter(c => c.close < low.low).length;
+    const candlesAboveEQL = recentCandles.filter(c => c.close > low.low).length;
+    
+    // Define all checks
+    const priceStillBelowEQL = currentPrice < low.low;
+    const holdingBelowLevel = avgLowRecent < low.low;
+    const avgCloseBelow = avgCloseRecent < low.low;
+    const sharpMoveAway = distanceFromEQL < -0.1;
+    const mostCandlesBelow = candlesBelowEQL >= 6;
+    
+    const clearlyAboveEQL = currentPrice > (low.low * 1.0005);
+    const mostCandlesAbove = candlesAboveEQL > 6;
+    
+    // CONTINUATION: Price holding below or moved sharply away
+    if (sharpMoveAway || (priceStillBelowEQL && mostCandlesBelow) || (holdingBelowLevel && avgCloseBelow)) {
+      status = "Continuation";
+      color = "yellow";
+    } 
+    // REVERSAL: Price clearly came back above
+    else if (clearlyAboveEQL && mostCandlesAbove) {
+      status = "Reversal";
+      color = "green";
+    } 
+    // MANUAL CHECK: Genuinely at the level
+    else {
+      status = "Manual Check";
+      color = "white";
+    }
+  } else {
+    status = "Manual Check";
+    color = "white";
+  }
+}
+  }
+
+  eqlNotices.pop();
+  eqlNotices.push({
+    level: low.low,
+    currentSwing: formatTime(low.time),
+    previousSwing: formatTime(prevLow.time),
+    currentPrice: low.low,
+    previousPrice: prevLow.low,
+    breakout: true,
+    retest: true,
+    status,
+    color,
+    proximity,
+  });
+}
             }
           }
         }
@@ -498,30 +609,40 @@ const BotLogic = () => {
         </select>
       </div>
       <div className="notification-container">
-        <div className="eqh-section">
-          <h3>Equal Highs</h3>
-          {eqhNotifications.length > 0 ? (
-            eqhNotifications.map((notice, index) => (
-              <p key={index} style={{ color: notice.color }}>
-                EQH at {notice.level} | Current: {notice.currentSwing} | Previous: {notice.previousPrice} | Previous: {notice.previousSwing} | Status: {notice.status} | Proximity: {notice.proximity}
-              </p>
-            ))
-          ) : (
-            <p>No EQH detected</p>
-          )}
-        </div>
-        <div className="eql-section">
-          <h3>Equal Lows</h3>
-          {eqlNotifications.length > 0 ? (
-            eqlNotifications.map((notice, index) => (
-              <p key={index} style={{ color: notice.color }}>
-                EQL at {notice.level} | Current: {notice.currentSwing} | Previous: {notice.previousPrice} | Previous: {notice.previousSwing} | Status: {notice.status} | Proximity: {notice.proximity}
-              </p>
-            ))
-          ) : (
-            <p>No EQL detected</p>
-          )}
-        </div>
+<div className="eqh-section">
+  <h3>Equal Highs</h3>
+  {eqhNotifications.length > 0 ? (
+    eqhNotifications.map((notice, index) => (
+      <p 
+        key={index} 
+        style={{ color: notice.color, cursor: "pointer" }}
+        onClick={() => onNotificationClick && onNotificationClick(notice, "EQH")}
+        className="clickable-notification"
+      >
+        EQH at {notice.level} | Current: {notice.currentSwing} | Previous: {notice.previousPrice} | Previous: {notice.previousSwing} | Status: {notice.status} | Proximity: {notice.proximity}
+      </p>
+    ))
+  ) : (
+    <p>No EQH detected</p>
+  )}
+</div>
+    <div className="eql-section">
+  <h3>Equal Lows</h3>
+  {eqlNotifications.length > 0 ? (
+    eqlNotifications.map((notice, index) => (
+      <p 
+        key={index} 
+        style={{ color: notice.color, cursor: "pointer" }}
+        onClick={() => onNotificationClick && onNotificationClick(notice, "EQL")}
+        className="clickable-notification"
+      >
+        EQL at {notice.level} | Current: {notice.currentSwing} | Previous: {notice.previousPrice} | Previous: {notice.previousSwing} | Status: {notice.status} | Proximity: {notice.proximity}
+      </p>
+    ))
+  ) : (
+    <p>No EQL detected</p>
+  )}
+</div>
       </div>
 
       {/* Percentage Change Display */}

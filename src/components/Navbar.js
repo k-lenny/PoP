@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import '../styles/Navbar.css'; 
 
 const Navbar = () => {
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -33,8 +34,8 @@ const Navbar = () => {
         <NavLink to="/simulator" className="nav-link">
           Simulator(Under development)
         </NavLink>
-        <NavLink to="/mss" className="nav-link">
-          Bos(Under development)
+          <NavLink to="/main" className="nav-link">
+         Main
         </NavLink>
       </div>
     </nav>
